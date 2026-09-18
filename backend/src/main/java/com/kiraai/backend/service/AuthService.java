@@ -4,7 +4,7 @@ import	com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import	com.kiraai.backend.dto.AuthResponse;
 import	com.kiraai.backend.model.User;
 import	com.kiraai.backend.repository.UserRepository;
-import	com.kiraai.backend.security.;
+import	com.kiraai.backend.security.GoogleTokenValidator;
 import	com.kiraai.backend.security.JwtService;
 import	org.springframework.stereotype.Service;
 import	java.time.Instant;
