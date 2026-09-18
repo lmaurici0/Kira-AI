@@ -1,15 +1,13 @@
 package com.kiraai.backend.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Document(collection = "user")
 public class User {
 
