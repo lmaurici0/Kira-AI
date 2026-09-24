@@ -59,4 +59,13 @@ public	class	ChatService	{
     public List<Conversation> listConversations(String userId) {
         return conversationRepository.findByUserIdOrderByUpdatedAtDesc(userId);
     }
+
+    public List<Message> getMessages(String userId, String conversationId) {
+        Conversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new IllegalArgumentException("Conversa nao encontrada"));
+        if (!conversation.getUserId().equals(userId)) {
+            throw new SecurityException("Conversa nao pertence a este usuario");
+        }
+        return messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
+    }
 }
