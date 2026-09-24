@@ -30,7 +30,6 @@ public	class	JwtAuthFilter	extends	OncePerRequestFilter	{
                         userId,	null,	Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }	catch	(Exception	e)	{
-                //	token	invalido:	segue	sem	autenticar,	o	SecurityConfig	barra	depois
             }
         }
         filterChain.doFilter(request,	response);
