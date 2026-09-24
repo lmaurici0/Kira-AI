@@ -7,6 +7,8 @@ import	com.kiraai.backend.repository.ConversationRepository;
 import	com.kiraai.backend.repository.MessageRepository;
 import	org.springframework.stereotype.Service;
 import	java.time.Instant;
+import java.util.List;
+
 @Service
 public	class	ChatService	{
     private	final	ConversationRepository	conversationRepository;
@@ -52,5 +54,9 @@ public	class	ChatService	{
         conversation.setCreatedAt(Instant.now());
         conversation.setUpdatedAt(Instant.now());
         return	conversationRepository.save(conversation);
+    }
+
+    public List<Conversation> listConversations(String userId) {
+        return conversationRepository.findByUserIdOrderByUpdatedAtDesc(userId);
     }
 }
