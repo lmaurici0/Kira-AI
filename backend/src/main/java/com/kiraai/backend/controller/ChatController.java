@@ -6,6 +6,9 @@ import	com.kiraai.backend.service.ChatService;
 import	org.springframework.http.ResponseEntity;
 import	org.springframework.security.core.Authentication;
 import	org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/chat")
 public	class	ChatController	{
@@ -27,5 +30,11 @@ public	class	ChatController	{
         String	userId	=	(String)	authentication.getPrincipal();
         ChatMessageResponse	response	=	chatService.sendMessage(userId,	conversationId,	request.getContent());
         return	ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/conversations")
+    public ResponseEntity<List<Conversation>> listConversations(Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
+        return ResponseEntity.ok(chatService.listConversations(userId));
     }
 }
