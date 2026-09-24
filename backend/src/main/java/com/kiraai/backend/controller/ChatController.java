@@ -2,6 +2,7 @@ package com.kiraai.backend.controller;
 import	com.kiraai.backend.dto.ChatMessageRequest;
 import	com.kiraai.backend.dto.ChatMessageResponse;
 import	com.kiraai.backend.model.Conversation;
+import com.kiraai.backend.model.Message;
 import	com.kiraai.backend.service.ChatService;
 import	org.springframework.http.ResponseEntity;
 import	org.springframework.security.core.Authentication;
@@ -36,5 +37,12 @@ public	class	ChatController	{
     public ResponseEntity<List<Conversation>> listConversations(Authentication authentication) {
         String userId = (String) authentication.getPrincipal();
         return ResponseEntity.ok(chatService.listConversations(userId));
+    }
+
+    @GetMapping("/conversations/{conversationId}/messages")
+    public ResponseEntity<List<Message>> getMessages(
+            @PathVariable String conversationId, Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
+        return ResponseEntity.ok(chatService.getMessages(userId, conversationId));
     }
 }
