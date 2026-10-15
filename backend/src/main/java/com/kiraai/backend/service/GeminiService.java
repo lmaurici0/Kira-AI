@@ -13,10 +13,10 @@ public class GeminiService {
     @Value("${app.gemini.api-key}")
     private String apiKey;
 
-    public String generateReply(String userMessage, String systemInstruction, double temperature) {
+    public String generateReply(String userMessage) {
         Client client = Client.builder().apiKey(apiKey).build();
         GenerateContentResponse response = client.models.generateContent(
-                "gemini-2.5-flash",
+                "gemini-3.1-flash-lite",
                 userMessage,
                 null
         );
