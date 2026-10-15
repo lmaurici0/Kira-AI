@@ -4,9 +4,11 @@ import	com.kiraai.backend.dto.ChatMessageResponse;
 import	com.kiraai.backend.model.Conversation;
 import com.kiraai.backend.model.Message;
 import	com.kiraai.backend.service.ChatService;
+import org.springframework.http.MediaType;
 import	org.springframework.http.ResponseEntity;
 import	org.springframework.security.core.Authentication;
 import	org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -44,5 +46,25 @@ public	class	ChatController	{
             @PathVariable String conversationId, Authentication authentication) {
         String userId = (String) authentication.getPrincipal();
         return ResponseEntity.ok(chatService.getMessages(userId, conversationId));
+    }
+
+    @PostMapping(value = "/conversations/{conversationId}/messages/stream",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter sendMessageStream(
+            @PathVariable String conversationId,
+            @RequestBody ChatMessageRequest request,
+            Authentication authentication) {
+
+        String userId = (String) authentication.getPrincipal();
+        SseEmitter emitter = new SseEmitter(60_000L);
+
+        chatService.sendMessageStream(userId, conversationId, request.getContent(),
+                chunk -> {
+                    try { emitter.send(chunk); } catch (Exception e) { emitter.completeWithError(e); }
+                },
+                () -> emitter.complete()
+        );
+
+        return emitter;
     }
 }
